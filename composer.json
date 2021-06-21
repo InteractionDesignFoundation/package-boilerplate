@@ -112,6 +112,7 @@
       "@rector:run"
     ],
     "rector:run": "rector process",
-    "security:check": "curl -s -H \"Accept: text/plain\" https://security.symfony.com/check_lock -F lock=@composer.lock"
+    "security:check": "curl -s -H \"Accept: text/plain\" https://security.symfony.com/check_lock -F lock=@composer.lock",
+    "test": "./vendor/bin/pest"
   }
 }
