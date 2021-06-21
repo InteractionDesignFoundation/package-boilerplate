@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Used for tests that should run on clean DB -->
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="./vendor/phpunit/phpunit/phpunit.xsd"
+         beStrictAboutOutputDuringTests="true"
+         bootstrap="vendor/autoload.php"
+         cacheResult="true"
+         colors="true"
+         executionOrder="defects"
+         stopOnFailure="false"
+         verbose="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Components">
+            <directory suffix="Test.php">./tests/Components</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+    </coverage>
+    <php>
+        <server name="APP_ENV" value="testing"/>
+        <server name="BCRYPT_ROUNDS" value="4"/>
+        <server name="CACHE_DRIVER" value="array"/>
+        <server name="DB_CONNECTION" value="testing"/>
+        <server name="MAIL_MAILER" value="array"/>
+        <server name="QUEUE_CONNECTION" value="null"/>
+        <server name="SESSION_DRIVER" value="array"/>
+        <server name="TELESCOPE_ENABLED" value="false"/>
+        <server name="FILESYSTEM_DRIVER" value="local"/>
+        <server name="ACTIVITY_LOGGER_ENABLED" value="false"/>
+        <server name="APP_DEBUGBAR_ENABLED" value="false"/>
+        <server name="CLOCKWORK_ENABLE" value="false"/>
+    </php>
+    <extensions>
+        <extension class="Tests\LongRunningTestAlert" />
+    </extensions>
+</phpunit>
