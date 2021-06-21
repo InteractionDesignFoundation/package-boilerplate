@@ -15,9 +15,6 @@
     "ext-redis": "*"
   },
   "require-dev": {
-    "barryvdh/laravel-ide-helper": "^2.6",
-    "beyondcode/laravel-query-detector": "^1.5",
-    "facade/ignition": "^2.5",
     "fakerphp/faker": "^1.12",
     "friendsofphp/php-cs-fixer": "^3.0",
     "jetbrains/phpstorm-attributes": "^1.0",
@@ -98,9 +95,9 @@
       "@phpstan:update",
       "@phpstan:run"
     ],
-    "phpstan:run": "./phpstan.phar analyse app config database tests --configuration phpstan.neon --memory-limit 2G",
+    "phpstan:run": "./phpstan.phar analyse src tests --configuration phpstan.neon --memory-limit 2G",
     "phpstan:update": "curl -L https://github.com/phpstan/phpstan/releases/latest/download/phpstan.phar > phpstan.phar && chmod +x phpstan.phar",
-    "phpstan:generate-baseline": "./phpstan.phar analyse app config database tests --configuration phpstan.neon --memory-limit 2G --generate-baseline",
+    "phpstan:generate-baseline": "./phpstan.phar analyse src tests --configuration phpstan.neon --memory-limit 2G --generate-baseline",
     "psalm": [
       "@psalm:update",
       "@psalm:run"

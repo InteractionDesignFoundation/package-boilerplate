@@ -1,12 +1,11 @@
 #!/usr/bin/env bash
 
-composer install --no-interaction
+set -xe
 
-composer php:lint
-composer phpstan
-composer psalm
-composer rector
-
-compose security-check
-
-./vendor/bin/phpunit --no-coverage
+composer install --no-interaction && \
+composer php:lint && \
+composer phpstan && \
+composer psalm && \
+composer rector && \
+composer security:check && \
+composer test
