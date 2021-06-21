@@ -1,5 +1,5 @@
-<?php
+<?php declare(strict_types=1);
 
-test('example', function () {
+test('example', static function () {
     expect(true)->toBeTrue();
 });
