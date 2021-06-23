@@ -1,0 +1,85 @@
+name: Run tests and deploy
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.php'
+      - '**.xml'
+      - 'composer.*'
+      - '.github/workflows/main.yml'
+
+jobs:
+
+  test_php:
+    name: Run PHP tests
+    runs-on: ubuntu-18.04
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: bcmath, curl, dom, filter, gd, hash, intl, json, libxml, mbstring, openssl, pdo_mysql, pdo, redis, simpleXML # keep in sync with composer.json
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        id: composer-cache
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true' # run composer install only when actions/cache haven't restored cached /vendor dir
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist --no-ansi
+
+
+      - name: Execute PHP tests
+        run: composer test
+
+      - name: Validate composer.lock
+        run: composer validate --no-check-all --strict # Validate `composer.lock` file
+
+      - name: Check composer dependencies
+        run: composer security:check # Security check for `composer.lock`
+
+  check_php_syntax:
+    name: Check PHP syntax
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: bcmath, curl, dom, filter, gd, hash, intl, json, libxml, mbstring, openssl, pdo_mysql, pdo, redis, simpleXML # keep in sync with composer.json
+          tools: cs2pr
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        id: composer-cache
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true' # run composer install only when actions/cache haven't restored cached /vendor dir
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist --no-ansi
+
+      # php artisan view:cache Needed to run before this!
+      - name: Check PHP syntax
+        run: composer php:syntax -- --checkstyle | cs2pr
