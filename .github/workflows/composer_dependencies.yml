@@ -1,0 +1,42 @@
+name: PHP dependencies
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '.github/workflows/composer_dependencies.yml'
+      - 'composer.*'
+
+jobs:
+  check_dependencies:
+    name: Check composer dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          coverage: none
+          tools: composer-require-checker, composer-unused
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        id: composer-cache
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true' # run composer install only when actions/cache haven't restored cached /vendor dir
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist --no-ansi
+
+      - name: Find unused dependencies
+        run: composer-unused
+        if: ${{ always() }}
