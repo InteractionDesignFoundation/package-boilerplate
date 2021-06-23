@@ -5,14 +5,7 @@
   "license": "GPL-3.0-only",
   "require": {
     "php": "^8.0.3",
-    "ext-PDO": "*",
-    "ext-bcmath": "*",
-    "ext-curl": "*",
-    "ext-json": "*",
-    "ext-mbstring": "*",
-    "ext-openssl": "*",
-    "ext-pdo_mysql": "*",
-    "ext-redis": "*"
+    "ext-pdo_mysql": "*"
   },
   "require-dev": {
     "fakerphp/faker": "^1.12",
