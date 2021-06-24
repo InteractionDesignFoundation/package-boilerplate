@@ -35,14 +35,12 @@
     "sort-packages": true
   },
   "autoload": {
-    "psr-4": {
-      "IxDF\\": "src/",
-      "IxDFCodingStandard\\": ".phpcs/IxDFCodingStandard/"
-    }
+    "psr-4": {}
   },
   "autoload-dev": {
     "psr-4": {
-      "Tests\\": "tests/"
+      "Tests\\": "tests/",
+      "IxDFCodingStandard\\": ".phpcs/IxDFCodingStandard/"
     }
   },
   "replace": {
