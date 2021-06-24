@@ -4,8 +4,7 @@
   "description": "Boilerplate for IxDF composer packages",
   "license": "GPL-3.0-only",
   "require": {
-    "php": "^8.0.3",
-    "ext-pdo_mysql": "*"
+    "php": "^8.0.3"
   },
   "require-dev": {
     "fakerphp/faker": "^1.12",
@@ -34,14 +33,6 @@
     "preferred-install": "dist",
     "process-timeout": 1800,
     "sort-packages": true
-  },
-  "extra": {
-    "laravel": {
-    },
-    "unused": [
-      "ext-pdo_mysql",
-      "itsgoingd/clockwork"
-    ]
   },
   "autoload": {
     "psr-4": {
