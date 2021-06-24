@@ -7,3 +7,4 @@ It contains:
 3. Static code analyzers (psalm, phpcs, phpcpd, phpstan) and the basic config
 4. Rector (with some basic ruleset)
 5. Composer scripts to run linters + tests easier
+6. Simple Github Actions workflows to run tests / linters on push
