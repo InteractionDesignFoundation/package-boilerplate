@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  php:
+    container_name: ixdf-boilerplate
+    build:
+      args:
+        USER_ID: ${WWWUSER:-unicorn}
+        GROUP_ID: 1000
+      context: .
+      dockerfile: ./.docker/Dockerfile
+    volumes:
+      - ./:/var/www/
+      - ./.docker/php/config/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:delegated
+      - ./.docker/php/config/local.ini:/usr/local/etc/php/conf.d/local.ini:delegated
+      - ./.docker/php/config/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini:delegated
+      - boilerplate_composer:/home/${USER_ID}/.composer
+    networks:
+      - boilerplate_network
+    tty: true
+    stdin_open: true
+
+volumes:
+  boilerplate_composer:
+
+networks:
+  boilerplate_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.220.128/28

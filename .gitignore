@@ -1,0 +1,8 @@
+.idea
+vendor
+.phpunit.result.cache
+phpunit.xml
+psalm.phar
+.phpcs.cache
+.php-cs-fixer.cache
+phpstan.phar

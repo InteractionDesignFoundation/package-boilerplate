@@ -1,0 +1,48 @@
+name: PHP Psalm
+
+on:
+  push:
+    paths:
+      - '**.php'
+      - 'composer.lock'
+      - 'psalm.xml'
+      - 'psalm-baseline.xml'
+      - '.github/workflows/psalm.yml'
+
+jobs:
+  psalm:
+    name: Psalm
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.0
+          extensions: bcmath, curl, dom, filter, gd, hash, intl, json, libxml, mbstring, openssl, pdo_mysql, pdo, redis, simpleXML # keep in sync with composer.json
+          coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v2
+        id: composer-cache
+        with:
+          path: vendor
+          key: composer-${{ hashFiles('composer.lock') }}
+
+      - name: Install composer dependencies
+        if: steps.composer-cache.outputs.cache-hit != 'true' # run composer install only when actions/cache haven't restored cached /vendor dir
+        run: composer install -q --no-interaction --no-scripts --no-progress --prefer-dist --no-ansi
+
+      - name: Detect a number of CPUs
+        id: detect_cpu_number
+        run: echo "::set-output name=CPU::`grep -c ^processor /proc/cpuinfo`"
+
+      - name: Run Psalm
+        run: |
+          composer psalm:update
+          composer psalm:run -- --threads=${{ steps.detect_cpu_number.outputs.CPU }}
