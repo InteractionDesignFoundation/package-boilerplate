@@ -181,13 +181,6 @@
         <exclude name="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion.RequiredConstructorPropertyPromotion"/><!-- We currently don’t require to use Constructor Property Promotion -->
         <exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInCall.MissingTrailingComma"/><!-- We currently don’t require it -->
         <exclude name="SlevomatCodingStandard.Functions.RequireTrailingCommaInDeclaration.MissingTrailingComma"/><!-- We currently don’t require it -->
-
-        <!--@todo temporary disabled due to a lot of violations. Desirable to use in the future -->
-        <exclude name="SlevomatCodingStandard.ControlStructures.DisallowEmpty"/><!-- Too many violations-->
-        <exclude name="SlevomatCodingStandard.Files.FunctionLength.FunctionLength"/><!-- Too many violations -->
-        <exclude name="SlevomatCodingStandard.Functions.UnusedParameter.UnusedParameter"/><!-- Too many violations-->
-        <exclude name="SlevomatCodingStandard.Namespaces.FullyQualifiedGlobalConstants.NonFullyQualified"/><!-- A bug changes Illuminate\Http\RedirectResponse to \RedirectResponse (when used as a union type) -->
-        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.IncorrectWhitespaceBeforeDeclare"/><!-- -->
     </rule>
 
     <!-- Forbid useless comments -->
