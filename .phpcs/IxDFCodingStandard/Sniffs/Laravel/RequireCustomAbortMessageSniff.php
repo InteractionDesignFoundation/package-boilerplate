@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace IxDFCodingStandard\Sniffs\Laravel;
 
@@ -26,7 +28,7 @@ final class RequireCustomAbortMessageSniff implements Sniff
         // cache to improve performance
         $this->functionNames = array_keys($this->functionsWithMinParameters);
 
-        return [T_STRING];
+        return [\T_STRING];
     }
 
     /**
@@ -37,39 +39,39 @@ final class RequireCustomAbortMessageSniff implements Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($functionPointer - 1), null, true);
+        $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($functionPointer - 1), null, true);
         if ($prevToken === false) {
             return;
         }
 
         // If function call is directly preceded by a NS_SEPARATOR it points to the
         // global namespace, so we should still catch it.
-        if ($tokens[$prevToken]['code'] === T_NS_SEPARATOR) {
-            $prevToken = $phpcsFile->findPrevious(T_WHITESPACE, ($prevToken - 1), null, true);
+        if ($tokens[$prevToken]['code'] === \T_NS_SEPARATOR) {
+            $prevToken = $phpcsFile->findPrevious(\T_WHITESPACE, ($prevToken - 1), null, true);
             if ($prevToken === false) {
                 return;
             }
 
-            if ($tokens[$prevToken]['code'] === T_STRING) {
+            if ($tokens[$prevToken]['code'] === \T_STRING) {
                 // Not in the global namespace.
                 return;
             }
         }
 
         $ignore = [
-            T_DOUBLE_COLON => true,
-            T_OBJECT_OPERATOR => true,
-            T_NULLSAFE_OBJECT_OPERATOR => true,
-            T_FUNCTION => true,
-            T_CONST => true,
-            T_PUBLIC => true,
-            T_PRIVATE => true,
-            T_PROTECTED => true,
-            T_AS => true,
-            T_NEW => true,
-            T_INSTEADOF => true,
-            T_NS_SEPARATOR => true,
-            T_IMPLEMENTS => true,
+            \T_DOUBLE_COLON => true,
+            \T_OBJECT_OPERATOR => true,
+            \T_NULLSAFE_OBJECT_OPERATOR => true,
+            \T_FUNCTION => true,
+            \T_CONST => true,
+            \T_PUBLIC => true,
+            \T_PRIVATE => true,
+            \T_PROTECTED => true,
+            \T_AS => true,
+            \T_NEW => true,
+            \T_INSTEADOF => true,
+            \T_NS_SEPARATOR => true,
+            \T_IMPLEMENTS => true,
         ];
 
         if (isset($ignore[$tokens[$prevToken]['code']]) === true) {
@@ -84,7 +86,7 @@ final class RequireCustomAbortMessageSniff implements Sniff
             return;
         }
 
-        if ($tokens[$nextEffectiveTokenPosition]['code'] !== T_OPEN_PARENTHESIS) {
+        if ($tokens[$nextEffectiveTokenPosition]['code'] !== \T_OPEN_PARENTHESIS) {
             // Not a call to a PHP function.
             return;
         }
